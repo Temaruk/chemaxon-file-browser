@@ -1,32 +1,10 @@
 import express from "express";
-import multer from "multer";
 import * as fs from "fs/promises";
 
-const PORT = 8000;
+import creteFilesRoutes from "./routes/files";
+import { DIRECTORY_PATH_UPLOADS, PORT } from "./constants";
 
 const app = express();
-
-const FILE_SIZE_MB_MAX = 3 * 1024 * 1024;
-const DIRECTORY_PATH_UPLOADS = "./uploads";
-
-const storage = multer.diskStorage({
-  destination: DIRECTORY_PATH_UPLOADS,
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
-const uploadSingleFile = multer({
-  storage,
-  limits: { fileSize: FILE_SIZE_MB_MAX },
-}).single("file");
-
-app.post("/api/files", uploadSingleFile, (req, res) => {
-  // TODO: take file from req and upload to S3
-  // TODO: store reference to file in DB ?
-  // TODO: delete local file
-  res.sendStatus(200);
-});
 
 type FileEntry = {
   filename: string;
@@ -73,6 +51,8 @@ app.get("/api/files/:fileName", (req, res) => {
     }
   });
 });
+
+app.use(creteFilesRoutes());
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
