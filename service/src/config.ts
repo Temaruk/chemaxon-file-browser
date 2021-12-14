@@ -1,4 +1,5 @@
-export const DIRECTORY_PATH_UPLOADS = "./uploads";
+export const DIRECTORY_PATH_UPLOADS =
+  process.env.DIRECTORY_PATH_UPLOADS || "./uploads";
 
 export const FILE_SIZE_MAX_MB = 3;
 
