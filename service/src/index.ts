@@ -1,11 +1,7 @@
-import express from "express";
-
-import createFilesRoutes from "./routes/files";
 import { PORT } from "./constants";
+import createServer from "./server";
 
-const app = express();
-
-app.use(createFilesRoutes());
+const app = createServer();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
