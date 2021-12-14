@@ -59,7 +59,17 @@ const FileUploader = () => {
                 />
               </FormField>
 
-              <Button label="Submit" primary type="submit" />
+              <Box direction="row" gap="medium">
+                <Button label="Submit" primary type="submit" />
+                <Button
+                  label="Close"
+                  type="button"
+                  onClick={() => {
+                    setShow(false);
+                    resetForm();
+                  }}
+                />
+              </Box>
             </Form>
           </Box>
         </Layer>
