@@ -1,4 +1,4 @@
-import { PORT } from "./constants";
+import { PORT } from "./config";
 import createServer from "./server";
 
 const app = createServer();

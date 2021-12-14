@@ -1,7 +1,7 @@
 import multer from "multer";
 import util from "util";
 
-import { DIRECTORY_PATH_UPLOADS, FILE_SIZE_MAX_BYTES } from "../constants";
+import { DIRECTORY_PATH_UPLOADS, FILE_SIZE_MAX_BYTES } from "../config";
 
 const storage = multer.diskStorage({
   destination: DIRECTORY_PATH_UPLOADS,

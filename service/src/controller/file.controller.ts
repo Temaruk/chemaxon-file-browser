@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { MulterError } from "multer";
 import * as fs from "fs/promises";
 
-import { DIRECTORY_PATH_UPLOADS, FILE_SIZE_MAX_MB } from "../constants";
+import { DIRECTORY_PATH_UPLOADS, FILE_SIZE_MAX_MB } from "../config";
 import asyncUploadSingleFile from "../middleware/upload";
 
 export const upload = async (req: Request, res: Response) => {
