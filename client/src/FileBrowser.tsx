@@ -1,21 +1,11 @@
 import React from "react";
 import moment from "moment";
-import {
-  Box,
-  DataTable,
-  Layer,
-  Text,
-  TextInput,
-  Button,
-  Notification,
-  ColumnConfig,
-} from "grommet";
-import { Clipboard } from "grommet-icons";
+import { Box, DataTable, Notification, ColumnConfig } from "grommet";
 
 import useFiles from "./hooks/useFiles";
 import type { FileEntry } from "./types";
-import { BASE_URL_API } from "./config";
 import Loader from "./Loader";
+import DialogShareableLink from "./DialogShareableLink";
 
 const columns: ColumnConfig<FileEntry>[] = [
   {
@@ -31,11 +21,9 @@ const columns: ColumnConfig<FileEntry>[] = [
   },
 ];
 
-const createShareabelUrl = (filename: string) =>
-  `${BASE_URL_API}/files/${filename}`;
-
 const FileBrowser = () => {
-  const [showShareableLink, setShowShareableLink] = React.useState(false);
+  const [showDialogShareableLink, setShowDialogShareableLink] =
+    React.useState(false);
   const [clickedFile, setClickedFile] = React.useState<FileEntry>();
 
   const filesQuery = useFiles();
@@ -79,53 +67,17 @@ const FileBrowser = () => {
         columns={columns}
         data={filesQuery.data}
         onClickRow={(event) => {
-          setShowShareableLink(true);
+          setShowDialogShareableLink(true);
           setClickedFile(event.datum);
         }}
         placeholder={placeholder}
       />
 
-      {showShareableLink && clickedFile && (
-        <Layer
-          position="center"
-          onEsc={() => setShowShareableLink(false)}
-          onClickOutside={() => setShowShareableLink(false)}
-        >
-          <Box margin="medium">
-            <Text>Shareable link for:</Text>
-            <Text weight="bold">{clickedFile.filename}</Text>
-
-            <Box direction="row" align="center" round="small" border>
-              <TextInput
-                plain
-                type="text"
-                value={createShareabelUrl(clickedFile.filename)}
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    createShareabelUrl(clickedFile.filename)
-                  )
-                }
-              />
-
-              <Box border={{ color: "dark-4", side: "left" }}>
-                <Button
-                  icon={<Clipboard color="brand" size="medium" />}
-                  margin={{ right: "xsmall" }}
-                  onClick={() =>
-                    navigator.clipboard.writeText(
-                      createShareabelUrl(clickedFile.filename)
-                    )
-                  }
-                />
-              </Box>
-            </Box>
-            <Button
-              margin={{ top: "medium" }}
-              label="close"
-              onClick={() => setShowShareableLink(false)}
-            />
-          </Box>
-        </Layer>
+      {showDialogShareableLink && clickedFile && (
+        <DialogShareableLink
+          filename={clickedFile.filename}
+          onClose={() => setShowDialogShareableLink(false)}
+        />
       )}
     </Box>
   );
