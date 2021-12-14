@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import { MulterError } from "multer";
+import * as fs from "fs/promises";
 
-import { FILE_SIZE_MAX_MB } from "../constants";
+import { DIRECTORY_PATH_UPLOADS, FILE_SIZE_MAX_MB } from "../constants";
 import asyncUploadSingleFile from "../middleware/upload";
 
 export const upload = async (req: Request, res: Response) => {
@@ -30,4 +31,36 @@ export const upload = async (req: Request, res: Response) => {
       message: `Could not upload the file. ${err}`,
     });
   }
+};
+
+type FileEntry = {
+  filename: string;
+  uploadDate: number;
+};
+
+export const getFiles = async (req: Request, res: Response) => {
+  let result: FileEntry[] = [];
+
+  // TODO: list files from S3 instead of local file system
+
+  let files: string[] = [];
+  try {
+    files = await fs.readdir(DIRECTORY_PATH_UPLOADS);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      message: "Could not load files from server. " + err,
+    });
+  }
+
+  for (const file of files) {
+    const fileStats = await fs.stat(`${DIRECTORY_PATH_UPLOADS}/${file}`);
+
+    result.push({
+      filename: file,
+      uploadDate: fileStats.birthtimeMs,
+    });
+  }
+
+  res.json(result);
 };
