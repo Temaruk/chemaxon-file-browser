@@ -1,0 +1,16 @@
+{
+  "name": "chemaxon-file-browser-monorepo",
+  "private": true,
+  "workspaces": [
+    "client",
+    "service"
+  ],
+  "dependencies": {
+    "concurrently": "^6.4.0"
+  },
+  "scripts": {
+    "client": "yarn workspace chemaxon-file-browser-client start",
+    "service": "yarn workspace chemaxon-file-browser-service start",
+    "start": "concurrently --kill-others-on-fail \"yarn service\"  \"yarn client\""
+  }
+}
