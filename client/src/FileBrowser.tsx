@@ -6,7 +6,6 @@ import {
   Layer,
   Text,
   TextInput,
-  Spinner,
   Button,
   Notification,
   ColumnConfig,
@@ -16,6 +15,7 @@ import { Clipboard } from "grommet-icons";
 import useFiles from "./hooks/useFiles";
 import type { FileEntry } from "./types";
 import { BASE_URL_API } from "./config";
+import Loader from "./Loader";
 
 const columns: ColumnConfig<FileEntry>[] = [
   {
@@ -69,20 +69,7 @@ const FileBrowser = () => {
   }
 
   if (isLoading) {
-    placeholder = (
-      <Box
-        fill
-        align="center"
-        justify="center"
-        direction="row"
-        pad="large"
-        gap="small"
-        background={{ color: "background-front", opacity: "strong" }}
-      >
-        <Spinner />
-        <Text weight="bold">Loading ...</Text>
-      </Box>
-    );
+    placeholder = <Loader />;
   }
 
   return (
