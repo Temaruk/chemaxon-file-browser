@@ -1,6 +1,6 @@
 # ChemAxon File Browser
 
-## Development
+## Scripts
 
 ### `yarn start`
 
