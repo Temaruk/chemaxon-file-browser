@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Request, Response } from "express";
 import { MulterError } from "multer";
 import * as fs from "fs/promises";
 
@@ -63,4 +63,18 @@ export const getFiles = async (req: Request, res: Response) => {
   }
 
   res.json(result);
+};
+
+export const download = (req: Request, res: Response) => {
+  // TODO: donwload file from S3
+
+  const fileName = req.params.fileName;
+
+  res.download(`${DIRECTORY_PATH_UPLOADS}/${fileName}`, fileName, (err) => {
+    if (err) {
+      res.status(500).send({
+        message: "Could not download the file. " + err,
+      });
+    }
+  });
 };
