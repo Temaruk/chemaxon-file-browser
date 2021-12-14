@@ -1,7 +1,7 @@
 import express from "express";
 import * as fs from "fs/promises";
 
-import creteFilesRoutes from "./routes/files";
+import createFilesRoutes from "./routes/files";
 import { DIRECTORY_PATH_UPLOADS, PORT } from "./constants";
 
 const app = express();
