@@ -12,12 +12,15 @@ const columns: ColumnConfig<FileEntry>[] = [
     property: "filename",
     header: "File Name",
     primary: true,
+    sortable: true,
+    search: true,
   },
   {
     property: "uploadDate",
     header: "Upload Date",
     render: (datum) => moment(datum.uploadDate).format("YYYY MMM DD HH:mm"),
     align: "end",
+    sortable: true,
   },
 ];
 
@@ -25,6 +28,13 @@ const FileBrowser = () => {
   const [showDialogShareableLink, setShowDialogShareableLink] =
     React.useState(false);
   const [clickedFile, setClickedFile] = React.useState<FileEntry>();
+  const [sort, setSort] = React.useState<{
+    property: string;
+    direction: "asc" | "desc";
+  }>({
+    property: "uploadDate",
+    direction: "desc",
+  });
 
   const filesQuery = useFiles();
 
@@ -33,6 +43,7 @@ const FileBrowser = () => {
   const isLoading =
     filesQuery.status === "loading" ||
     filesQuery.status === "idle" ||
+    filesQuery.isFetching ||
     !filesQuery.data;
 
   let placeholder;
@@ -63,7 +74,6 @@ const FileBrowser = () => {
   return (
     <Box pad="large" align="center" fill="horizontal">
       <DataTable
-        // size="medium"
         columns={columns}
         data={filesQuery.data}
         onClickRow={(event) => {
@@ -71,6 +81,8 @@ const FileBrowser = () => {
           setClickedFile(event.datum);
         }}
         placeholder={placeholder}
+        sort={sort}
+        onSort={setSort}
       />
 
       {showDialogShareableLink && clickedFile && (
